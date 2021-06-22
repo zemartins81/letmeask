@@ -1,13 +1,20 @@
+import {useContext} from 'react'
+import { Link } from 'react-router-dom'
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg'
 
 import {Button} from "../components/Button";
 
+
 import '../styles/auth.scss'
 
+
+
 export function NewRoom() {
+
     return (
         <div id="page-auth">
+
             <aside>
                 <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas"/>
                 <strong>Crie salas de Q&amp;A ao vivo</strong>
@@ -28,7 +35,7 @@ export function NewRoom() {
                         </Button>
                     </form>
                     <p>
-                        Quer entrar em uma sala diferente? <a href="#">Clique Aqui</a>
+                        Quer entrar em uma sala diferente? <Link to="/">Clique Aqui</Link>
                     </p>
                 </div>
             </main>
