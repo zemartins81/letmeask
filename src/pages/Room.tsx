@@ -6,65 +6,19 @@ import '../styles/room.scss'
 import { RoomCode } from '../components/RoomCode'
 import { useAuth } from '../hooks/useAuth'
 import { database } from '../services/firebase'
+import { Question } from '../components/Question'
+import { UseRoom } from '../hooks/useRoom'
 
 type RoomParams = {
   id: string
 }
 
-type FireBaseQuestions = Record<
-  string,
-  {
-    author: {
-      name: string
-      avatar: string
-    }
-    content: string
-    isAnswered: boolean
-    isHighLighted: boolean
-  }
->
-
-type Question = {
-  id: string
-  author: {
-    name: string
-    avatar: string
-  }
-  content: string
-  isAnswered: boolean
-  isHighLighted: boolean
-}
 export function Room(): ReactElement {
   const { user } = useAuth()
   const params = useParams<RoomParams>()
   const roomId = params.id
   const [newQuestion, setNewQuestion] = useState('')
-  const [questions, setQuestions] = useState<Question[]>([])
-  const [title, setTitle] = useState('')
-
-  useEffect(() => {
-    const roomRef = database.ref(`rooms/${roomId}`)
-
-    roomRef.on('value', (room) => {
-      const databaseRoom = room.val()
-      const firebaseQuestions: FireBaseQuestions = databaseRoom.questions ?? {}
-
-      const parsedQuestions = Object.entries(firebaseQuestions).map(
-        ([key, value]) => {
-          return {
-            id: key,
-            content: value.content,
-            author: value.author,
-            isHighLighted: value.isHighLighted,
-            isAnswered: value.isAnswered,
-          }
-        },
-      )
-
-      setTitle(databaseRoom.title)
-      setQuestions(parsedQuestions)
-    })
-  }, [roomId])
+  const { title, questions } = UseRoom(roomID)
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault()
@@ -129,7 +83,12 @@ export function Room(): ReactElement {
             </Button>
           </div>
         </form>
-        {JSON.stringify(questions)}
+
+        <div className="question-list">
+          {questions.map(({ author, content, id }) => {
+            return <Question key={id} content={content} author={author} />
+          })}
+        </div>
       </main>
     </div>
   )
