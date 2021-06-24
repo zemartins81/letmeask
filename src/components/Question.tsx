@@ -1,5 +1,5 @@
 import '../styles/question.scss'
-import { ReactElement } from 'react'
+import { ReactElement, ReactNode } from 'react'
 
 type QuestionProps = {
   content: string
@@ -7,8 +7,13 @@ type QuestionProps = {
     name: string
     avatar: string
   }
+  children: ReactNode
 }
-export function Question({ content, author }: QuestionProps): ReactElement {
+export function Question({
+  content,
+  author,
+  children,
+}: QuestionProps): ReactElement {
   return (
     <div className="question">
       <p>{content}</p>
@@ -17,7 +22,7 @@ export function Question({ content, author }: QuestionProps): ReactElement {
           <img src={author.avatar} alt={author.name} />
           <span>{author.name}</span>
         </div>
-        <div />
+        <div>{children}</div>
       </footer>
     </div>
   )
