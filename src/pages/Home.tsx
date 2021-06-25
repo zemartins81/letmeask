@@ -36,6 +36,7 @@ export function Home(): ReactElement {
     }
 
     if (roomRef.val().endedAt) {
+      // eslint-disable-next-line no-alert
       alert('Room already closed')
       return
     }
